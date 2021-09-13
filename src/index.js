@@ -1,4 +1,5 @@
 const get = require('lodash.get');
+const merge = require('lodash.merge');
 const glob = require('glob');
 const { resolve } = require('./utils/fs');
 
@@ -21,7 +22,7 @@ class Modularize {
       } catch (e) {
         return this.serverless.utils.readFileSync(filename);
       }
-    }
+    };
 
     this.hooks = {
       [`${PLUGIN}:info:info`]: this.printInfo.bind(this),
@@ -92,7 +93,7 @@ class Modularize {
       {},
     );
 
-    Object.assign(this.serverless.service, mergedValues);
+    merge(this.serverless.service, mergedValues);
   }
 
   processCustom() {
@@ -101,7 +102,7 @@ class Modularize {
     if (match && match[0]) {
       const filename = match[0].slice(1, -1);
 
-      Object.assign(this.serverless.service, {
+      merge(this.serverless.service, {
         custom: this.resolve(filename),
       });
     }
